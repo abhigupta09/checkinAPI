@@ -6,6 +6,7 @@ import {catchError, tap} from 'rxjs/operators';
 
 const httpOptions = {
     headers: new HttpHeaders({
+        'Content-Type': 'application/x-www-form-urlencoded',
         'Authorization': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjMwMjZmMWEwLWY4OWQtNDY5NC04ZTY3LTBmOW' +
             'UzODYyYTZiYSIsIm5hbWUiOiJTcmF2eWEifQ.T8apUDdf404NOpTX1KkZV_PBhUdkFX0JxDR9V_VUZdg'
     })
