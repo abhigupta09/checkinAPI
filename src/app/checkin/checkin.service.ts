@@ -51,10 +51,33 @@ export class CheckinService {
     }
 
     closeCheck(checkId): Observable<any> {
-        const url = this.serviceUrl + '/checks' + '/' + checkId + '/close'
+        const url = this.serviceUrl + '/checks' + '/' + checkId + '/close';
         return this.http.put(url, {}, httpOptions).pipe(
             tap(response => console.log('PUT /checks/ID/close Response', response)),
             catchError(this.handleError<any>('error in PUT /checks/ID/close'))
+        );
+    }
+
+    getCheck(checkId): Observable<any> {
+        const url = this.serviceUrl + '/checks' + '/' + checkId;
+        return this.http.get(url, httpOptions).pipe(
+            tap(response => console.log('GET /checks/ID Response', response)),
+            catchError(this.handleError<any>('error in GET /checks/ID'))
+        );
+    }
+
+    getItems(): Observable<any> {
+        return this.http.get(this.serviceUrl + '/items', httpOptions).pipe(
+            tap(response => console.log('GET /checks/items Response', response)),
+            catchError(this.handleError<any>('error in GET /checks/items'))
+        );
+    }
+
+    addItem(addItem, checkId): Observable<any> {
+        const url = this.serviceUrl + '/checks' + '/' + checkId + '/addItem';
+        return this.http.put(url, addItem, httpOptions).pipe(
+            tap(response => console.log('PUT /checks/ID/addItems Response', response)),
+            catchError(this.handleError<any>('error in PUT /checks/ID/Items'))
         );
     }
 

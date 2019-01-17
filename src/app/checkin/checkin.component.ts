@@ -7,6 +7,10 @@ import {CheckinService} from './checkin.service';
     styleUrls: ['./checkin.component.css']
 })
 export class CheckinComponent implements OnInit {
+    private orderItems: [];
+    private itemsList: [];
+    private displayItemTable: boolean;
+    private displayOrderItemTable: boolean;
 
     constructor(private checkinService: CheckinService) {
     }
@@ -41,6 +45,7 @@ export class CheckinComponent implements OnInit {
     }
 
     getCheckByTableId(table) {
+        this.displayItemTable = this.displayOrderItemTable = false;
         let checkIndex: number;
         this.checksByTableId = undefined;
         this.checkinService.getCheckByTableId().subscribe(checks => {
@@ -64,9 +69,39 @@ export class CheckinComponent implements OnInit {
     deleteAllChecks() {
         this.tableId = undefined;
         this.alreadyCalledForCheck = [];
+        this.displayOrderItemTable = false;
+        this.itemsList = [];
         this.uncheckAll();
         this.checkinService.deleteAllChecks().subscribe(deleteChecks => {
             console.log('delete checks', deleteChecks);
+        });
+    }
+
+    getCheckById(checkId) {
+        this.displayOrderItemTable  = true;
+        this.displayItemTable = false;
+        this.orderItems = this.checksByTableId[0].orderedItems;
+        this.checkinService.getCheck(checkId).subscribe(getCheckResponse => {
+            con
+            this.checksByTableId = [getCheckResponse];
+        });
+    }
+
+    getItems() {
+        this.displayItemTable = true;
+        this.displayOrderItemTable = false;
+        this.checkinService.getItems().subscribe(itemResponse => {
+            this.itemsList = itemResponse;
+        });
+    }
+
+    addItemToCheck(itemId) {
+        const itemObj = {
+            itemId : itemId
+        };
+        console.log('her', itemId, this.checksByTableId[0].id);
+        this.checkinService.addItem(itemObj, this.checksByTableId[0].id).subscribe(itemResponse => {
+            console.log('item addes', itemResponse);
         });
     }
 
@@ -74,6 +109,14 @@ export class CheckinComponent implements OnInit {
         this.checkboxes.forEach((element) => {
             element.nativeElement.checked = false;
         });
+    }
+
+    resetDisplayItemTable() {
+        this.displayItemTable = false;
+    }
+
+    resetDisplayOrderItemTable() {
+        this.displayOrderItemTable = false;
     }
 
 }
