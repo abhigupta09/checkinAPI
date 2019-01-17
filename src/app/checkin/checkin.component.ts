@@ -7,8 +7,8 @@ import {CheckinService} from './checkin.service';
     styleUrls: ['./checkin.component.css']
 })
 export class CheckinComponent implements OnInit {
-    private orderItems: [];
-    private itemsList: [];
+    orderItems: [] = [];
+    private itemsList: [] = [];
     private displayItemTable: boolean;
     private displayOrderItemTable: boolean;
 
@@ -68,6 +68,7 @@ export class CheckinComponent implements OnInit {
 
     deleteAllChecks() {
         this.tableId = undefined;
+        this.displayItemTable = false;
         this.alreadyCalledForCheck = [];
         this.displayOrderItemTable = false;
         this.itemsList = [];
@@ -78,12 +79,12 @@ export class CheckinComponent implements OnInit {
     }
 
     getCheckById(checkId) {
-        this.displayOrderItemTable  = true;
+        this.displayOrderItemTable = true;
         this.displayItemTable = false;
-        this.orderItems = this.checksByTableId[0].orderedItems;
         this.checkinService.getCheck(checkId).subscribe(getCheckResponse => {
-            con
+            console.log('here dat', getCheckResponse);
             this.checksByTableId = [getCheckResponse];
+            this.orderItems = this.checksByTableId[0].orderedItems;
         });
     }
 
@@ -96,12 +97,26 @@ export class CheckinComponent implements OnInit {
     }
 
     addItemToCheck(itemId) {
+        const self = this;
         const itemObj = {
-            itemId : itemId
+            itemId: itemId
+        };
+        this.checkinService.addItem(itemObj, this.checksByTableId[0].id).subscribe(itemResponse => {
+            self.itemsList.splice(self.itemsList.findIndex(item => {
+                // @ts-ignore
+                return item.id === itemId;
+            }), 1);
+        });
+    }
+
+    voidAnItem(itemId) {
+        const self = this;
+        const itemObj = {
+            orderedItemId: itemId
         };
         console.log('her', itemId, this.checksByTableId[0].id);
-        this.checkinService.addItem(itemObj, this.checksByTableId[0].id).subscribe(itemResponse => {
-            console.log('item addes', itemResponse);
+        this.checkinService.voidItem(itemObj, this.checksByTableId[0].id).subscribe(voidItemResponse => {
+            self.getCheckById(self.checksByTableId[0].id);
         });
     }
 

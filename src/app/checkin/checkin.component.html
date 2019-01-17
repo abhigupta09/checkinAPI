@@ -36,7 +36,7 @@
                     <button type="button" class="btn btn-primary" (click)="getItems()">View Item to Add
                     </button>
                 </td>
-                <table class="table table-hover">
+                <table class="table table-hover" *ngIf="checksByTableId.length">
                     <thead class="w-25 p-2 col-sm-6">
                     <tr>
                         <th scope="col">Check ID</th>
@@ -68,13 +68,20 @@
                     </tr>
                     </tbody>
                 </table>
+                <div *ngIf="!checksByTableId.length" style="padding-top: 40px; text-align: center"><h2>There is no check
+                    for selected
+                    Table.</h2>
+                    <h2>
+                        Please add a check first!!
+                    </h2>
+                </div>
             </div>
             <div *ngIf="itemsList && displayItemTable">
-                <div class="row"><h3>Select Items</h3>
+                <div class="row"><h3 style="padding-right: 515px">Select Items</h3>
                     <button type="button" class="btn btn-primary" (click)="resetDisplayItemTable()">CLOSE
                     </button>
                 </div>
-                <table class="table table-hover">
+                <table class="table table-hover" *ngIf="itemsList.length">
                     <thead class="w-25 p-2 col-sm-6">
                     <tr>
                         <th scope="col">ITEM ID</th>
@@ -95,14 +102,17 @@
                     </tr>
                     </tbody>
                 </table>
+                <div *ngIf="!itemsList.length" style="padding-top: 40px; text-align: center">
+                    <h2>You have added all the items available.</h2>
+                </div>
             </div>
             <div *ngIf="displayOrderItemTable">
                 <div class="row">
-                    <h3>OrderedItems</h3>
+                    <h3 style="padding-right: 500px">Ordered Items</h3>
                     <button type="button" class="btn btn-primary" (click)="resetDisplayOrderItemTable()">CLOSE
                     </button>
                 </div>
-                <table class="table table-hover">
+                <table class="table table-hover" *ngIf="orderItems.length">
                     <thead class="w-25 p-2 col-sm-6">
                     <tr>
                         <th scope="col">Unique ID</th>
@@ -111,7 +121,8 @@
                         <th scope="col">Creation Date</th>
                         <th scope="col">Updation Date</th>
                         <th scope="col">createdBy</th>
-                        <th scope="col">voided</th>
+                        <th scope="col">Voided?</th>
+                        <th scope="col">Void Item</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -122,11 +133,15 @@
                         <td>{{item.dateCreated}}</td>
                         <td>{{item.dateUpdated}}</td>
                         <td>{{item.createdBy}}</td>
-                        <td>{{item.voided}}
-                        </td>
+                        <td>{{item.voided}}</td>
+                        <td><button type="button" class="btn btn-danger" (click)="voidAnItem(item.id)">VOID
+                        </button></td>
                     </tr>
                     </tbody>
                 </table>
+                <div *ngIf="!orderItems.length" style="padding-top: 40px; text-align: center">
+                    <h2>You haven't order any item yet.</h2>
+                </div>
             </div>
         </div>
     </div>
