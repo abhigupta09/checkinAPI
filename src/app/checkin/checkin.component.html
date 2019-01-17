@@ -1,18 +1,64 @@
-<table class="table table-hover">
-    <thead>
-    <tr>
-        <th scope="col">ID</th>
-        <th scope="col">Table Number</th>
-        <th scope="col">Create a check</th>
-        <th scope="col">Delete</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr *ngFor="let table of tableData; let i = index">
-        <th scope="row">{{i}}</th>
-        <td>{{table.number}}</td>
-        <td><button type="button" class="btn btn-primary" (click)="createCheck(table.id)">Create</button></td>
-        <td><button type="button" class="btn btn-danger">Delete</button></td>
-    </tr>
-    </tbody>
-</table>
+<div class="container">
+    <div>
+        <button type="button" class="btn btn-danger" (click)="deleteAllChecks()">DELETE ALL CHECKS</button>
+    </div>
+    <div class="row">
+        <div class="col-sm-4">
+            <table class="table table-hover">
+                <thead class="w-50 p-3 col-sm-6">
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Table Number</th>
+                    <th scope="col">Create a check</th>
+                    <th scope="col">View Checks</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let table of tableData">
+                    <th scope="row">{{table.id}}</th>
+                    <td>{{table.number}}</td>
+                    <td>
+                        <label class="checkbox-inline" (click)="createCheck(table.id)"><input #checkboxes
+                                                                                              type="checkbox" value=""></label>
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-primary" (click)="getCheckByTableId(table)">View
+                        </button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div *ngIf="tableId" class="col-sm-7 padding-sm">
+            <h3>Checks for Table ID : {{tableId.number}}/ {{tableId.id}}</h3>
+            <table class="table table-hover">
+                <thead class="w-50 p-3 col-sm-6">
+                <tr>
+                    <th scope="col">Check ID</th>
+                    <th scope="col">Table ID</th>
+                    <th scope="col">Creation Date</th>
+                    <th scope="col">Updation Date</th>
+                    <th scope="col">createdBy</th>
+                    <th scope="col">Status(OPEN / CLOSED)</th>
+                    <th scope="col">Want to close Check?</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let check of checksByTableId">
+                    <th scope="row">{{check.id}}</th>
+                    <td>{{check.tableId}}</td>
+                    <td>{{check.dateCreated}}</td>
+                    <td>{{check.dateUpdated}}</td>
+                    <td>{{check.createdBy}}</td>
+                    <td>{{check.closed ? 'CLOSED' : 'OPEN'}}</td>
+                    <td>
+                        <button type="button" class="btn btn-danger" (click)="closeCheckById(check.id)">Close
+                        </button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>

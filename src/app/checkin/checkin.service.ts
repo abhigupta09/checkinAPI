@@ -36,6 +36,28 @@ export class CheckinService {
         );
     }
 
+    getCheckByTableId(): Observable<any> {
+      return this.http.get(this.serviceUrl + '/checks', httpOptions).pipe(
+          tap(response => console.log('GET /checks Response', response)),
+          catchError(this.handleError<any>('error in GET /checks'))
+      );
+    }
+
+    deleteAllChecks(): Observable<any> {
+        return this.http.delete(this.serviceUrl + '/checks', httpOptions).pipe(
+            tap(response => console.log('DELETE /checks Response', response)),
+            catchError(this.handleError<any>('error in DELETE /checks'))
+        );
+    }
+
+    closeCheck(checkId): Observable<any> {
+        const url = this.serviceUrl + '/checks' + '/' + checkId + '/close'
+        return this.http.put(url, {}, httpOptions).pipe(
+            tap(response => console.log('PUT /checks/ID/close Response', response)),
+            catchError(this.handleError<any>('error in PUT /checks/ID/close'))
+        );
+    }
+
     private handleError<T>(operation = 'operation', result?: T) {
         return (error: any): Observable<T> => {
             console.log('error', error); // log to console instead
